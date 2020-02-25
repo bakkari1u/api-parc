@@ -46,6 +46,16 @@ class Jardin
      */
     private $animauxAccept;
 
+    /**
+     * @ORM\Column(type="string", length=255 , nullable=true)
+     */
+    private $description;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $ville;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -119,6 +129,28 @@ class Jardin
     public function setAnimauxAccept(bool $animauxAccept): self
     {
         $this->animauxAccept = $animauxAccept;
+
+        return $this;
+    }
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(string $ville): self
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
 
         return $this;
     }

@@ -36,6 +36,8 @@ class JardinController extends AbstractController
         $jardin->setType($data["type"]);
         $jardin->setAnimauxAccept($data["animauxAccept"]);
         $jardin->setPublicPrive($data["publicPrive"]);
+        $jardin->setVille($data["ville"]);
+        $jardin->setDescription($data["description"]);
         $manager->persist($jardin);
         $manager->flush();
         $manager->clear();
@@ -43,7 +45,7 @@ class JardinController extends AbstractController
     }
 
     /**
-     * @Route("/jardin_show", name="jardin_show", methods={"GET"})
+     * @Route("/jardins", name="jardin_show", methods={"GET"})
      */
     public function show()
     {
