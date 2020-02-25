@@ -1,3 +1,7 @@
 #index:
 #    path: /
 #    controller: App\Controller\DefaultController::index
+
+#jardin_add:
+#  path: /jardin_add
+#  controller: App\Controller\JardinController::new
