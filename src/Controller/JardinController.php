@@ -29,6 +29,7 @@ class JardinController extends AbstractController
     {
         $data = json_decode($request->getContent(), true);
         $manager = $this->getDoctrine()->getManager();
+
         $jardin = new Jardin();
         $jardin->setName($data["name"]);
         $jardin->setAdresse($data["adresse"]);
@@ -38,9 +39,11 @@ class JardinController extends AbstractController
         $jardin->setPublicPrive($data["publicPrive"]);
         $jardin->setVille($data["ville"]);
         $jardin->setDescription($data["description"]);
+
         $manager->persist($jardin);
         $manager->flush();
         $manager->clear();
+
         return new Response("OK");
     }
 
