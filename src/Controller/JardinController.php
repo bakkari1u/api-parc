@@ -120,6 +120,20 @@ class JardinController extends AbstractController
         );
     }
 
+    /**
+     * @Route("/jardins/{keyWords}", name="jardins_research_keyWords", methods={"GET"})
+     */
+    public function researchKeyWords($keyWords)
+    {
+
+        $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->finJardinWithKeyWords($keyWords);
+        return new JsonResponse(
+            [
+                "jardins_name" => $res
+            ], Response::HTTP_CREATED
+        );
+    }
+
     protected static function extraireTabToChaine($array) : string
     {
         $res = "";

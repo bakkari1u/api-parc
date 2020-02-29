@@ -80,4 +80,18 @@ class JardinRepository extends ServiceEntityRepository
             );
         return $query->getQuery()->getArrayResult();
     }
+
+    public function finJardinWithKeyWords(string $keyWords)
+    {
+        $query = $this->createQueryBuilder('j')
+            ->select(
+                "
+            j.id,
+            j.nameParcGarden
+            "
+            )
+            ->where('j.nameParcGarden LIKE :keyWords')
+            ->setParameter('keyWords', "%".$keyWords."%");;
+        return $query->getQuery()->getArrayResult();
+    }
 }
