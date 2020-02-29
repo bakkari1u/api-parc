@@ -55,6 +55,9 @@ class JardinController extends AbstractController
         $media = $data["garden"]["media"];
         $photoBase64 = $data["photo"];
 
+        $visit["typeVisit"] = $this->extraireTabToChaine($visit["typeVisit"]);
+        $usefulInformation["disabilityAccessibility"] = $this->extraireTabToChaine($usefulInformation["disabilityAccessibility"]);
+
         $manager = $this->getDoctrine()->getManager();
         $jardin = new Jardin();
 
@@ -100,13 +103,38 @@ class JardinController extends AbstractController
     public function show($id)
     {
 
-        $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findOneBySomeField($id);
+        $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findOneById($id);
+        if($res != null)
+        {
+         $res["typeVisit"] = $this->extraireChaineToTab($res["typeVisit"]);
+            if($res["photo"] != null)
+            {
+                $res["photo"] = base64_encode(file_get_contents($res["photo"]));
+            }
+        }
 
         return new JsonResponse(
             [
                 "jardin" => $res
             ], Response::HTTP_CREATED
         );
+    }
+
+    protected static function extraireTabToChaine($array) : string
+    {
+        $res = "";
+        foreach ($array as $key => $value)
+        {
+            if($key < count($array)-1)  $res .= $value."|";
+            else  $res .= $value;
+        }
+        return $res ;
+    }
+
+    protected static function extraireChaineToTab($string) : array
+    {
+
+        return  explode("|", $string);
     }
 
 

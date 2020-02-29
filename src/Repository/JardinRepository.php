@@ -37,21 +37,33 @@ class JardinRepository extends ServiceEntityRepository
     */
 
 
-    public function findOneBySomeField($value)
+    public function findOneById($value)
     {
-        return $this->createQueryBuilder('j')
+        return  $this->createQueryBuilder('j')
             ->select(
                 "
             j.id,
             j.nameParcGarden ,
+            j.address,
+            j.zipCode,
+            j.city,
+            j.nameOwner,
+            j.phone,
+            j.emailAdress,
             j.descriptive,
-            j.photo
-            "
-            )
+            j.photo,
+            j.webSite,
+            j.typeGardenParc,
+            j.Historical,
+            j.dateTime,
+            j.price,
+            j.typeVisit,
+            j.averageDurationVisit
+            ")
             ->where('j.id = :val')
             ->setParameter('val', $value)
             ->getQuery()
-            ->getArrayResult()
+            ->getOneOrNullResult()
         ;
     }
 
