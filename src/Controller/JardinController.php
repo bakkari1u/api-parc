@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Jardin;
 use App\Form\ContactInformationType;
 use App\Form\InformationType;
-use App\Form\JardinType;
 use App\Form\MediaType;
 use App\Form\OpeningConditionsType;
 use App\Form\SpecialType;
@@ -20,55 +19,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class JardinController extends AbstractController
 {
     /**
-     * @Route("/jardin", name="jardin")
+     * @Route("/jardins", name="jardins_list", methods={"GET"})
      */
-    public function index()
+    public function list()
     {
-        return $this->json([
-            'message' => 'Welcome to your new controller!',
-            'path' => 'src/Controller/JardinController.php',
-        ]);
-    }
-
-    /**
-     * @Route("/jardin_add", name="jardin_add", methods={"POST"})
-     */
-    public function new(Request $request):Response
-    {
-        $data = json_decode($request->getContent(), true);
-        $manager = $this->getDoctrine()->getManager();
-
-//        $jardin = new Jardin();
-//        $jardin->setName($data["name"]);
-//        $jardin->setAdresse($data["adresse"]);
-//        $jardin->setCodePostale($data["codePostale"]);
-//        $jardin->setType($data["type"]);
-//        $jardin->setAnimauxAccept($data["animauxAccept"]);
-//        $jardin->setPublicPrive($data["publicPrive"]);
-//        $jardin->setVille($data["ville"]);
-//        $jardin->setDescription($data["description"]);
-//
-//        $manager->persist($jardin);
-//        $manager->flush();
-//        $manager->clear();
-
-        return new Response("OK");
-    }
-
-    /**
-     * @Route("/jardins", name="jardin_show", methods={"GET"})
-     */
-    public function show()
-    {
-
-        $imagedata = file_get_contents("../public/jardins/1.jpg");
-        $base64 = base64_encode($imagedata);
 
         $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findAllJardin();
+        foreach ($res as $key => $value)
+        {
+            if($value["photo"] != null)
+            {
+                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
+            }
+        }
+
          return new JsonResponse(
         [
-            "jardins_list" => $res,
-            "photo" => $base64
+            "jardins_list" => $res
         ], Response::HTTP_CREATED
     );
     }
@@ -76,7 +43,7 @@ class JardinController extends AbstractController
     /**
      * @Route("/new", name="new_jardin", methods={"POST"})
      */
-    public function add(Request $request):Response
+    public function add(Request $request)
     {
         $data = json_decode($request->getContent(), true);
         $contactInformation = $data["garden"]["contactInformation"];
@@ -86,6 +53,7 @@ class JardinController extends AbstractController
         $information = $data["garden"]["information"];
         $special = $data["garden"]["special"];
         $media = $data["garden"]["media"];
+        $photoBase64 = $data["photo"];
 
         $manager = $this->getDoctrine()->getManager();
         $jardin = new Jardin();
@@ -107,6 +75,12 @@ class JardinController extends AbstractController
         $formulaire5->submit($special, false);
         $formulaire6->submit($media, false);
 
+        $name = '../public/jardins/'.$contactInformation["nameParcGarden"].'.png';
+        if($photoBase64 != null)
+        {
+            $photo = file_put_contents($name, base64_decode($photoBase64));
+            $jardin->setPhoto($name);
+        }
 
         $manager->persist($jardin);
         $manager->flush();
@@ -118,6 +92,21 @@ class JardinController extends AbstractController
             "jardin_id" => $jardin->getId(),
         ], Response::HTTP_CREATED
     );
+    }
+
+    /**
+     * @Route("/jardin/{id}", name="jardin_show", methods={"GET"})
+     */
+    public function show($id)
+    {
+
+        $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findOneBySomeField($id);
+
+        return new JsonResponse(
+            [
+                "jardin" => $res
+            ], Response::HTTP_CREATED
+        );
     }
 
 
