@@ -53,8 +53,8 @@ class JardinRepository extends ServiceEntityRepository
             ->select(
                 "
             j.id,
-            j.name ,
-            j.description
+            j.nameParcGarden ,
+            j.descriptive
             "
             );
         return $query->getQuery()->getArrayResult();

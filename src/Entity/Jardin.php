@@ -11,147 +11,509 @@ class Jardin
 {
     /**
      * @ORM\Id()
-     * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $name;
+    private $nameParcGarden;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $adresse;
+    private $address;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $codePostale;
+    private $zipCode;
 
     /**
      * @ORM\Column(type="boolean")
      */
-    private $publicPrive;
+    private $state;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $type;
+    private $typeGardenParc;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean" , nullable=true)
      */
     private $animauxAccept;
 
     /**
-     * @ORM\Column(type="string", length=255 , nullable=true)
+     * @ORM\Column(type="string", length=500 , nullable=true)
      */
-    private $description;
+    private $descriptive;
 
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $ville;
+    private $city;
 
-    public function getId(): ?int
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $nameOwner;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $fax;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $emailAdress;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $area;
+
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $dateTime;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $price;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $averageDurationVisit;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $photo;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $webSite;
+
+    /**
+     * @ORM\Column(type="string", length=30, nullable=true)
+     */
+    private $facebook;
+
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $remarkableLabel;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $disabilityAccessibility;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $typeVisit;
+
+    /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     */
+    private $Historical;
+
+    /**
+     * @return mixed
+     */
+    public function getId()
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    /**
+     * @param mixed $id
+     */
+    public function setId($id): void
     {
-        return $this->name;
+        $this->id = $id;
     }
 
-    public function setName(string $name): self
+    /**
+     * @return mixed
+     */
+    public function getNameParcGarden()
     {
-        $this->name = $name;
-
-        return $this;
+        return $this->nameParcGarden;
     }
 
-    public function getAdresse(): ?string
+    /**
+     * @param mixed $nameParcGarden
+     */
+    public function setNameParcGarden($nameParcGarden): void
     {
-        return $this->adresse;
+        $this->nameParcGarden = $nameParcGarden;
     }
 
-    public function setAdresse(string $adresse): self
+    /**
+     * @return mixed
+     */
+    public function getAddress()
     {
-        $this->adresse = $adresse;
-
-        return $this;
+        return $this->address;
     }
 
-    public function getCodePostale(): ?int
+    /**
+     * @param mixed $address
+     */
+    public function setAddress($address): void
     {
-        return $this->codePostale;
+        $this->address = $address;
     }
 
-    public function setCodePostale(int $codePostale): self
+    /**
+     * @return mixed
+     */
+    public function getZipCode()
     {
-        $this->codePostale = $codePostale;
-
-        return $this;
+        return $this->zipCode;
     }
 
-    public function getPublicPrive(): ?bool
+    /**
+     * @param mixed $zipCode
+     */
+    public function setZipCode($zipCode): void
     {
-        return $this->publicPrive;
+        $this->zipCode = $zipCode;
     }
 
-    public function setPublicPrive(bool $publicPrive): self
+    /**
+     * @return mixed
+     */
+    public function getState()
     {
-        $this->publicPrive = $publicPrive;
-
-        return $this;
+        return $this->state;
     }
 
-    public function getType(): ?string
+    /**
+     * @param mixed $state
+     */
+    public function setState($state): void
     {
-        return $this->type;
+        $this->state = $state;
     }
 
-    public function setType(string $type): self
+    /**
+     * @return mixed
+     */
+    public function getTypeGardenParc()
     {
-        $this->type = $type;
-
-        return $this;
+        return $this->typeGardenParc;
     }
 
-    public function getAnimauxAccept(): ?bool
+    /**
+     * @param mixed $typeGardenParc
+     */
+    public function setTypeGardenParc($typeGardenParc): void
+    {
+        $this->typeGardenParc = $typeGardenParc;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAnimauxAccept()
     {
         return $this->animauxAccept;
     }
 
-    public function setAnimauxAccept(bool $animauxAccept): self
+    /**
+     * @param mixed $animauxAccept
+     */
+    public function setAnimauxAccept($animauxAccept): void
     {
         $this->animauxAccept = $animauxAccept;
-
-        return $this;
     }
-    public function getVille(): ?string
+
+    /**
+     * @return mixed
+     */
+    public function getDescriptive()
     {
-        return $this->ville;
+        return $this->descriptive;
     }
 
-    public function setVille(string $ville): self
+    /**
+     * @param mixed $descriptive
+     */
+    public function setDescriptive($descriptive): void
     {
-        $this->ville = $ville;
-
-        return $this;
+        $this->descriptive = $descriptive;
     }
-    public function getDescription(): ?string
+
+    /**
+     * @return mixed
+     */
+    public function getCity()
     {
-        return $this->description;
+        return $this->city;
     }
 
-    public function setDescription(string $description): self
+    /**
+     * @param mixed $city
+     */
+    public function setCity($city): void
     {
-        $this->description = $description;
-
-        return $this;
+        $this->city = $city;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNameOwner()
+    {
+        return $this->nameOwner;
+    }
+
+    /**
+     * @param mixed $nameOwner
+     */
+    public function setNameOwner($nameOwner): void
+    {
+        $this->nameOwner = $nameOwner;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param mixed $phone
+     */
+    public function setPhone($phone): void
+    {
+        $this->phone = $phone;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFax()
+    {
+        return $this->fax;
+    }
+
+    /**
+     * @param mixed $fax
+     */
+    public function setFax($fax): void
+    {
+        $this->fax = $fax;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getEmailAdress()
+    {
+        return $this->emailAdress;
+    }
+
+    /**
+     * @param mixed $emailAdress
+     */
+    public function setEmailAdress($emailAdress): void
+    {
+        $this->emailAdress = $emailAdress;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getArea()
+    {
+        return $this->area;
+    }
+
+    /**
+     * @param mixed $area
+     */
+    public function setArea($area): void
+    {
+        $this->area = $area;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDateTime()
+    {
+        return $this->dateTime;
+    }
+
+    /**
+     * @param mixed $dateTime
+     */
+    public function setDateTime($dateTime): void
+    {
+        $this->dateTime = $dateTime;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPrice()
+    {
+        return $this->price;
+    }
+
+    /**
+     * @param mixed $price
+     */
+    public function setPrice($price): void
+    {
+        $this->price = $price;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAverageDurationVisit()
+    {
+        return $this->averageDurationVisit;
+    }
+
+    /**
+     * @param mixed $averageDurationVisit
+     */
+    public function setAverageDurationVisit($averageDurationVisit): void
+    {
+        $this->averageDurationVisit = $averageDurationVisit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getPhoto()
+    {
+        return $this->photo;
+    }
+
+    /**
+     * @param mixed $photo
+     */
+    public function setPhoto($photo): void
+    {
+        $this->photo = $photo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getWebSite()
+    {
+        return $this->webSite;
+    }
+
+    /**
+     * @param mixed $webSite
+     */
+    public function setWebSite($webSite): void
+    {
+        $this->webSite = $webSite;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFacebook()
+    {
+        return $this->facebook;
+    }
+
+    /**
+     * @param mixed $facebook
+     */
+    public function setFacebook($facebook): void
+    {
+        $this->facebook = $facebook;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getRemarkableLabel()
+    {
+        return $this->remarkableLabel;
+    }
+
+    /**
+     * @param mixed $remarkableLabel
+     */
+    public function setRemarkableLabel($remarkableLabel): void
+    {
+        $this->remarkableLabel = $remarkableLabel;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getDisabilityAccessibility()
+    {
+        return $this->disabilityAccessibility;
+    }
+
+    /**
+     * @param mixed $disabilityAccessibility
+     */
+    public function setDisabilityAccessibility($disabilityAccessibility): void
+    {
+        $this->disabilityAccessibility = $disabilityAccessibility;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getTypeVisit()
+    {
+        return $this->typeVisit;
+    }
+
+    /**
+     * @param mixed $typeVisit
+     */
+    public function setTypeVisit($typeVisit): void
+    {
+        $this->typeVisit = $typeVisit;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHistorical()
+    {
+        return $this->Historical;
+    }
+
+    /**
+     * @param mixed $Historical
+     */
+    public function setHistorical($Historical): void
+    {
+        $this->Historical = $Historical;
+    }
+
+
 }
