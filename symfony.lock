@@ -1,4 +1,7 @@
 {
+    "aws/aws-sdk-php": {
+        "version": "3.133.26"
+    },
     "doctrine/annotations": {
         "version": "1.0",
         "recipe": {
@@ -75,8 +78,20 @@
     "doctrine/reflection": {
         "version": "v1.1.0"
     },
+    "guzzlehttp/guzzle": {
+        "version": "6.5.2"
+    },
+    "guzzlehttp/promises": {
+        "version": "v1.3.1"
+    },
+    "guzzlehttp/psr7": {
+        "version": "1.6.1"
+    },
     "jdorn/sql-formatter": {
         "version": "v1.2.17"
+    },
+    "mtdowling/jmespath.php": {
+        "version": "2.5.0"
     },
     "nelmio/cors-bundle": {
         "version": "1.5",
@@ -108,8 +123,14 @@
     "psr/container": {
         "version": "1.0.0"
     },
+    "psr/http-message": {
+        "version": "1.0.1"
+    },
     "psr/log": {
         "version": "1.1.2"
+    },
+    "ralouphie/getallheaders": {
+        "version": "3.0.3"
     },
     "sensio/framework-extra-bundle": {
         "version": "5.2",

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Controller;
 
 use App\Entity\Jardin;
@@ -138,9 +139,8 @@ class JardinController extends AbstractController
 
         $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->finJardinWithKeyWords($keyWords);
         return new JsonResponse(
-            [
-                "jardins_name" => $res
-            ], Response::HTTP_CREATED
+           $res
+            , Response::HTTP_CREATED
         );
     }
 
@@ -197,17 +197,12 @@ class JardinController extends AbstractController
      * @Route("/test", name="test", methods={"GET"})
      */
       public function test(){
-          $test = "";
-           foreach (new \DirectoryIterator('../var/') as $fileInfo) {
-             if ($fileInfo->isDot()) continue;
-             $test .= $fileInfo->getFilename() ."-------";
+          $s3 = new Aws\S3\S3Client();
+          $bucket = getenv('S3_BUCKET')?: die('No "S3_BUCKET" config var in found in env!');
+          $upload = $s3->upload($bucket, $_FILES['file']['name'], fopen($_FILES['file']['tmp_name'], 'rb'), 'public-read');
 }
-          return new JsonResponse(
-              [
-                  "test" => $test
-              ], Response::HTTP_CREATED
-          );
-}
+
+
 
 
 }

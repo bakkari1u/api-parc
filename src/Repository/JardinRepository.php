@@ -69,7 +69,9 @@ class JardinRepository extends ServiceEntityRepository
             ->select(
                 "
             j.id,
-            j.nameParcGarden
+            j.nameParcGarden,
+            j.zipCode,
+            j.city
             "
             )
             ->where('j.nameParcGarden LIKE :keyWords')
