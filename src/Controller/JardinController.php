@@ -28,10 +28,10 @@ class JardinController extends AbstractController
         $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findAllJardin();
         foreach ($res as $key => $value)
         {
-            if($value["photo"] != null)
-            {
-                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
-            }
+//            if($value["photo"] != null)
+//            {
+//                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
+//            }
         }
 
          return new JsonResponse(
@@ -56,7 +56,6 @@ class JardinController extends AbstractController
         $information = $data["information"];
         $special = $data["special"];
         $media = $data["media"];
-        //$photoBase64 = $data["photo"];
 
         $visit["typeVisit"] = $this->extraireTabToChaine($visit["typeVisit"]);
         $usefulInformation["disabilityAccessibility"] = $this->extraireTabToChaine($usefulInformation["disabilityAccessibility"]);
@@ -81,13 +80,6 @@ class JardinController extends AbstractController
         $formulaire4->submit($information, false);
         $formulaire5->submit($special, false);
         $formulaire6->submit($media, false);
-
-//        $name = '../public/jardins/'.$contactInformation["nameParcGarden"].'.png';
-//        if($photoBase64 != null)
-//        {
-//            $photo = file_put_contents($name, base64_decode($photoBase64));
-//            $jardin->setPhoto($name);
-//        }
 
         if($file != null)
         {
@@ -120,15 +112,16 @@ class JardinController extends AbstractController
         {
          $res["typeVisit"] = $this->extraireChaineToTab($res["typeVisit"]);
          $res["typeGardenParc"] = $this->extraireChaineToTab($res["typeGardenParc"]);
-            if($res["photo"] != null)
-            {
-                $res["photo"] = base64_encode(file_get_contents($res["photo"]));
-            }
+
+//            if($res["photo"] != null)
+//            {
+//                $res["photo"] = base64_encode(file_get_contents($res["photo"]));
+//            }
         }
 
         return new JsonResponse(
 
-            $res , Response::HTTP_CREATED
+            $this->file($this->getParameter('photo').'../public/jardins/jardin1.png'), Response::HTTP_CREATED
         );
     }
 
@@ -163,7 +156,7 @@ class JardinController extends AbstractController
     }
 
     /**
-     * @Route("/jardins-filters/criteria/{params?1}", name="jardins_research_criteria", methods={"GET"})
+     * @Route("/jardins-filter/{params?1}", name="jardins_research_criteria", methods={"GET"})
      */
     public function researchCriteria($params)
     {
@@ -180,8 +173,10 @@ class JardinController extends AbstractController
          {
              $tab = explode("=", $value);
              if($tab[0] == "remarkableLabel") $paramsTab["remarkableLabel"] = $tab[1] ;
-             if($tab[0] == "state") $paramsTab["state"] = $tab[1] ;
+             if($tab[0] == "public") $paramsTab["public"] = $tab[1] ;
+             if($tab[0] == "private") $paramsTab["private"] = $tab[1] ;
              if($tab[0] == "city") $paramsTab["city"] = $tab[1] ;
+             if($tab[0] == "note") $paramsTab["note"] = $tab[1] ;
              if($tab[0] == "disabilityAccessibility") $paramsTab["disabilityAccessibility"] = $tab[1] ;
          }
 
@@ -219,14 +214,17 @@ class JardinController extends AbstractController
     }
 
     /**
-     * @Route("/test", name="test", methods={"GET"})
+     * @Route("/city-research/{keyWords}", name="jardins_research_keyWords", methods={"GET"})
      */
-      public function test(){
-          $s3 = new Aws\S3\S3Client();
-          $bucket = getenv('S3_BUCKET')?: die('No "S3_BUCKET" config var in found in env!');
-          $upload = $s3->upload($bucket, $_FILES['file']['name'], fopen($_FILES['file']['tmp_name'], 'rb'), 'public-read');
-}
+    public function researchCity($keyWords)
+    {
 
+        $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->finCityWithKeyWords($keyWords);
+        return new JsonResponse(
+            $res
+            , Response::HTTP_CREATED
+        );
+    }
 
 
 

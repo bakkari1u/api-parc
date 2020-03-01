@@ -87,16 +87,22 @@ class JardinRepository extends ServiceEntityRepository
             j.id,
             j.nameParcGarden ,
             j.descriptive,
-            j.photo
+            j.photo,
+            j.remarkableLabel,
+            j.state
             "
             );
         if (array_key_exists( "remarkableLabel" , $params)) {
             $query = $query->andWhere("(j.remarkableLabel = :remarq)")
-                ->setParameter("remarq", $params["remarkableLabel"]);
+                ->setParameter("remarq", true);
         }
-        if (array_key_exists( "state" , $params)) {
-            $query = $query->andWhere("(j.state = :s)")
-                ->setParameter("s", $params["state"]);
+        if (array_key_exists( "public" , $params)) {
+            $query = $query->andWhere("(j.state like :s)")
+                ->setParameter("s", 'public');
+        }
+        if (array_key_exists( "private" , $params)) {
+            $query = $query->andWhere("(j.state like :s)")
+                ->setParameter("s", 'privee');
         }
         if (array_key_exists( "city" , $params)) {
             $query = $query->andWhere("(j.city = :c)")
@@ -105,6 +111,23 @@ class JardinRepository extends ServiceEntityRepository
         if (array_key_exists( "disabilityAccessibility" , $params)) {
             $query = $query->andWhere("(j.disabilityAccessibility is not null )");
         }
+        if (array_key_exists( "note" , $params)) {
+            $query = $query->addOrderBy('j.note', 'DESC');
+        }
+        return $query->getQuery()->getArrayResult();
+    }
+
+    public function finCityWithKeyWords(string $keyWords)
+    {
+        $query = $this->createQueryBuilder('j')
+            ->select(
+                "
+            DISTINCT j.city as name,
+            j.zipCode
+            "
+            )
+            ->where('j.city LIKE :keyWords')
+            ->setParameter('keyWords', "%".$keyWords."%");;
         return $query->getQuery()->getArrayResult();
     }
 

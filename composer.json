@@ -16,7 +16,9 @@
         "symfony/form": "4.4.*",
         "symfony/framework-bundle": "4.4.*",
         "symfony/orm-pack": "^1.0",
-        "symfony/yaml": "4.4.*"
+        "symfony/yaml": "4.4.*",
+        "cloudinary/cloudinary_php": "dev-master"
+
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.14",
