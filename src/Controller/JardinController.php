@@ -91,11 +91,11 @@ class JardinController extends AbstractController
 
         if($file != null)
         {
-        $uploaddir = '../var/';
+        $uploaddir = '../public/jardins/';
         $uploadfile = $uploaddir . basename($file['name']);
         move_uploaded_file($file['tmp_name'], $uploadfile);
 
-        $jardin->setPhoto('../var/'.$file['name']);
+        $jardin->setPhoto('../public/jardins/'.$file['name']);
         }
 
         $manager->persist($jardin);
@@ -119,6 +119,7 @@ class JardinController extends AbstractController
         if($res != null)
         {
          $res["typeVisit"] = $this->extraireChaineToTab($res["typeVisit"]);
+         $res["typeGardenParc"] = $this->extraireChaineToTab($res["typeGardenParc"]);
             if($res["photo"] != null)
             {
                 $res["photo"] = base64_encode(file_get_contents($res["photo"]));
