@@ -19,24 +19,6 @@ class JardinRepository extends ServiceEntityRepository
         parent::__construct($registry, Jardin::class);
     }
 
-    // /**
-    //  * @return Jardin[] Returns an array of Jardin objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('j')
-            ->andWhere('j.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('j.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-
     public function findOneById($value)
     {
         return  $this->createQueryBuilder('j')

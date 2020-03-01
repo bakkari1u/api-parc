@@ -45,14 +45,17 @@ class JardinController extends AbstractController
      */
     public function add(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
-        $contactInformation = $data["garden"]["contactInformation"];
-        $usefulInformation = $data["garden"]["usefulInformation"];
-        $openingConditions = $data["garden"]["openingConditions"];
-        $visit = $data["garden"]["visit"];
-        $information = $data["garden"]["information"];
-        $special = $data["garden"]["special"];
-        $media = $data["garden"]["media"];
+        $file =  $request->request->get("file");
+        $dataPost = $request->request->get("garden");
+
+        $data = json_decode($dataPost, true);
+        $contactInformation = $data["contactInformation"];
+        $usefulInformation = $data["usefulInformation"];
+        $openingConditions = $data["openingConditions"];
+        $visit = $data["visit"];
+        $information = $data["information"];
+        $special = $data["special"];
+        $media = $data["media"];
         //$photoBase64 = $data["photo"];
 
         $visit["typeVisit"] = $this->extraireTabToChaine($visit["typeVisit"]);
@@ -85,6 +88,10 @@ class JardinController extends AbstractController
 //            $photo = file_put_contents($name, base64_decode($photoBase64));
 //            $jardin->setPhoto($name);
 //        }
+
+//        $uploaddir = '../public/jardins/';
+//        $uploadfile = $uploaddir . basename($file['name']);
+//        move_uploaded_file($file['tmp_name'], $uploadfile);
 
         $manager->persist($jardin);
         $manager->flush();
