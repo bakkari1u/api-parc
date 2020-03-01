@@ -45,7 +45,7 @@ class JardinController extends AbstractController
      */
     public function add(Request $request)
     {
-        $file =  $request->request->get("file");
+        $file =  $_FILES['file'];
         $dataPost = $request->request->get("garden");
 
         $data = json_decode($dataPost, true);
@@ -89,9 +89,10 @@ class JardinController extends AbstractController
 //            $jardin->setPhoto($name);
 //        }
 
-//        $uploaddir = '../public/jardins/';
-//        $uploadfile = $uploaddir . basename($file['name']);
-//        move_uploaded_file($file['tmp_name'], $uploadfile);
+        if($file != null){
+        $uploaddir = '../public/jardins/';
+        $uploadfile = $uploaddir . basename($file['name']);
+        move_uploaded_file($file['tmp_name'], $uploadfile);}
 
         $manager->persist($jardin);
         $manager->flush();
@@ -99,8 +100,7 @@ class JardinController extends AbstractController
 
         return new JsonResponse(
         [
-            "success" => true,
-            "jardin_id" => $jardin->getId(),
+            "success" => true
         ], Response::HTTP_CREATED
     );
     }
