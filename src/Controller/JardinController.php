@@ -200,7 +200,7 @@ class JardinController extends AbstractController
      */
       public function test(){
           $test = "";
-           foreach (new \DirectoryIterator('../public/jardins/') as $fileInfo) {
+           foreach (new \DirectoryIterator('../var/') as $fileInfo) {
              if ($fileInfo->isDot()) continue;
              $test .= $fileInfo->getFilename() ."-------";
 }
