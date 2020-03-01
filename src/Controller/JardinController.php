@@ -34,9 +34,8 @@ class JardinController extends AbstractController
 //        }
 
          return new JsonResponse(
-        [
-            "jardins_list" => $res
-        ], Response::HTTP_CREATED
+
+             $res, Response::HTTP_CREATED
     );
     }
 
@@ -126,9 +125,8 @@ class JardinController extends AbstractController
         }
 
         return new JsonResponse(
-            [
-                 $res
-            ], Response::HTTP_CREATED
+
+            $res , Response::HTTP_CREATED
         );
     }
 
