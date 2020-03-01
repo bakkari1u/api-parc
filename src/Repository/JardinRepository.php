@@ -87,9 +87,7 @@ class JardinRepository extends ServiceEntityRepository
             j.id,
             j.nameParcGarden ,
             j.descriptive,
-            j.photo,
-            j.remarkableLabel,
-            j.state
+            j.photo
             "
             );
         if (array_key_exists( "remarkableLabel" , $params)) {
