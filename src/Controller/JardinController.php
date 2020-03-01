@@ -26,13 +26,13 @@ class JardinController extends AbstractController
     {
 
         $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findAllJardin();
-//        foreach ($res as $key => $value)
-//        {
-//            if($value["photo"] != null)
-//            {
-//                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
-//            }
-//        }
+        foreach ($res as $key => $value)
+        {
+            if($value["photo"] != null)
+            {
+                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
+            }
+        }
 
          return new JsonResponse(
 
@@ -91,11 +91,11 @@ class JardinController extends AbstractController
 
         if($file != null)
         {
-        $uploaddir = '../public/jardins/';
+        $uploaddir = '__DIR__/public/jardins/';
         $uploadfile = $uploaddir . basename($file['name']);
         move_uploaded_file($file['tmp_name'], $uploadfile);
 
-        $jardin->setPhoto('../public/jardins/'.$file['name']);
+        $jardin->setPhoto('__DIR__/public/jardins/'.$file['name']);
         }
 
         $manager->persist($jardin);
