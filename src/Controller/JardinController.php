@@ -91,11 +91,11 @@ class JardinController extends AbstractController
 
         if($file != null)
         {
-        $uploaddir = '../public/jardins/';
+        $uploaddir = '../var/';
         $uploadfile = $uploaddir . basename($file['name']);
         move_uploaded_file($file['tmp_name'], $uploadfile);
 
-        $jardin->setPhoto('../public/jardins/'.$file['name']);
+        $jardin->setPhoto('../var/'.$file['name']);
         }
 
         $manager->persist($jardin);
@@ -201,9 +201,8 @@ class JardinController extends AbstractController
       public function test(){
           $test = "";
            foreach (new \DirectoryIterator('../public/jardins/') as $fileInfo) {
-    if ($fileInfo->isDot()) continue;
-//    echo $fileInfo->getFilename() . "<br>\n";
-    $test .= $fileInfo->getFilename() ."-------";
+             if ($fileInfo->isDot()) continue;
+             $test .= $fileInfo->getFilename() ."-------";
 }
           return new JsonResponse(
               [
