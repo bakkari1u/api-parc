@@ -132,7 +132,7 @@ class JardinController extends AbstractController
     }
 
     /**
-     * @Route("/jardins/{keyWords}", name="jardins_research_keyWords", methods={"GET"})
+     * @Route("/jardins-research/{keyWords}", name="jardins_research_keyWords", methods={"GET"})
      */
     public function researchKeyWords($keyWords)
     {
