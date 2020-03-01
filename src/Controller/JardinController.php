@@ -195,5 +195,22 @@ class JardinController extends AbstractController
         );
     }
 
+    /**
+     * @Route("/test", name="test", methods={"GET"})
+     */
+      public function test(){
+          $test = "";
+           foreach (new \DirectoryIterator('../public/jardins/') as $fileInfo) {
+    if ($fileInfo->isDot()) continue;
+//    echo $fileInfo->getFilename() . "<br>\n";
+    $test .= $fileInfo->getFilename() ."-------";
+}
+          return new JsonResponse(
+              [
+                  "test" => $test
+              ], Response::HTTP_CREATED
+          );
+}
+
 
 }
