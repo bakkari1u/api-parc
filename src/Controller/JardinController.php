@@ -25,13 +25,13 @@ class JardinController extends AbstractController
     {
 
         $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findAllJardin();
-        foreach ($res as $key => $value)
-        {
-            if($value["photo"] != null)
-            {
-                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
-            }
-        }
+//        foreach ($res as $key => $value)
+//        {
+//            if($value["photo"] != null)
+//            {
+//                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
+//            }
+//        }
 
          return new JsonResponse(
         [
@@ -127,7 +127,7 @@ class JardinController extends AbstractController
 
         return new JsonResponse(
             [
-                "jardin" => $res
+                 $res
             ], Response::HTTP_CREATED
         );
     }
