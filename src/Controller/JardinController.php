@@ -53,10 +53,11 @@ class JardinController extends AbstractController
         $information = $data["garden"]["information"];
         $special = $data["garden"]["special"];
         $media = $data["garden"]["media"];
-        $photoBase64 = $data["photo"];
+        //$photoBase64 = $data["photo"];
 
         $visit["typeVisit"] = $this->extraireTabToChaine($visit["typeVisit"]);
         $usefulInformation["disabilityAccessibility"] = $this->extraireTabToChaine($usefulInformation["disabilityAccessibility"]);
+        $special["typeGardenParc"] = $this->extraireTabToChaine( $special["typeGardenParc"]);
 
         $manager = $this->getDoctrine()->getManager();
         $jardin = new Jardin();
@@ -78,12 +79,12 @@ class JardinController extends AbstractController
         $formulaire5->submit($special, false);
         $formulaire6->submit($media, false);
 
-        $name = '../public/jardins/'.$contactInformation["nameParcGarden"].'.png';
-        if($photoBase64 != null)
-        {
-            $photo = file_put_contents($name, base64_decode($photoBase64));
-            $jardin->setPhoto($name);
-        }
+//        $name = '../public/jardins/'.$contactInformation["nameParcGarden"].'.png';
+//        if($photoBase64 != null)
+//        {
+//            $photo = file_put_contents($name, base64_decode($photoBase64));
+//            $jardin->setPhoto($name);
+//        }
 
         $manager->persist($jardin);
         $manager->flush();
@@ -145,10 +146,42 @@ class JardinController extends AbstractController
         return $res ;
     }
 
-    protected static function extraireChaineToTab($string) : array
+    protected static function extraireChaineToTab($string)
     {
 
-        return  explode("|", $string);
+        return  $string == null ? null : explode("|", $string);
+    }
+
+    /**
+     * @Route("/jardins-filters/criteria/{params?1}", name="jardins_research_criteria", methods={"GET"})
+     */
+    public function researchCriteria($params)
+    {
+        $jardinRepository = $this->getDoctrine()->getManager()->getRepository(Jardin::class);
+        $paramsTab = array();
+        if($params == 1)
+        {
+            $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findAllJardin();
+        }
+        else
+        {
+         $filterTab = explode("&", $params);
+         foreach ($filterTab as $key => $value)
+         {
+             $tab = explode("=", $value);
+             if($tab[0] == "remarkableLabel") $paramsTab["remarkableLabel"] = $tab[1] ;
+             if($tab[0] == "state") $paramsTab["state"] = $tab[1] ;
+             if($tab[0] == "city") $paramsTab["city"] = $tab[1] ;
+             if($tab[0] == "disabilityAccessibility") $paramsTab["disabilityAccessibility"] = $tab[1] ;
+         }
+
+            $res = $jardinRepository->findByFilters($paramsTab);
+        }
+        return new JsonResponse(
+            [
+                "jardins_list" => $res
+            ], Response::HTTP_CREATED
+        );
     }
 
 

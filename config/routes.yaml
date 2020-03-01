@@ -5,3 +5,7 @@
 #jardin_add:
 #  path: /jardin_add
 #  controller: App\Controller\JardinController::new
+
+#jardins_research_criteria:
+#  path:       /jardins-filters/criteria/{$params?}
+#  controller: App\Controller\JardinController::researchCriteria

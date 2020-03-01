@@ -94,4 +94,33 @@ class JardinRepository extends ServiceEntityRepository
             ->setParameter('keyWords', "%".$keyWords."%");;
         return $query->getQuery()->getArrayResult();
     }
-}
+    public function findByFilters($params)
+    {
+        $query = $this->createQueryBuilder('j')
+            ->select(
+                "
+            j.id,
+            j.nameParcGarden ,
+            j.descriptive,
+            j.photo
+            "
+            );
+        if (array_key_exists( "remarkableLabel" , $params)) {
+            $query = $query->andWhere("(j.remarkableLabel = :remarq)")
+                ->setParameter("remarq", $params["remarkableLabel"]);
+        }
+        if (array_key_exists( "state" , $params)) {
+            $query = $query->andWhere("(j.state = :s)")
+                ->setParameter("s", $params["state"]);
+        }
+        if (array_key_exists( "city" , $params)) {
+            $query = $query->andWhere("(j.city = :c)")
+                ->setParameter("c", $params["city"]);
+        }
+        if (array_key_exists( "disabilityAccessibility" , $params)) {
+            $query = $query->andWhere("(j.disabilityAccessibility is not null )");
+        }
+        return $query->getQuery()->getArrayResult();
+    }
+
+    }

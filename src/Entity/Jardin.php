@@ -32,7 +32,7 @@ class Jardin
     private $zipCode;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="string", length=255)
      */
     private $state;
 
