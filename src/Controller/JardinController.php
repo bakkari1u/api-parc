@@ -91,11 +91,11 @@ class JardinController extends AbstractController
 
         if($file != null)
         {
-        $uploaddir = '__DIR__/public/jardins/';
+        $uploaddir = '../public/jardins/';
         $uploadfile = $uploaddir . basename($file['name']);
         move_uploaded_file($file['tmp_name'], $uploadfile);
 
-        $jardin->setPhoto('__DIR__/public/jardins/'.$file['name']);
+        $jardin->setPhoto('../public/jardins/'.$file['name']);
         }
 
         $manager->persist($jardin);
@@ -190,6 +190,30 @@ class JardinController extends AbstractController
         return new JsonResponse(
             [
                 "jardins_list" => $res
+            ], Response::HTTP_CREATED
+        );
+    }
+
+    /**
+     * @Route("/note/{id}/{n}", name="jardins_note", methods={"POST"})
+     */
+    public function noterJardin($id , $n)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $jardinRepo = $manager->getRepository(Jardin::class);
+
+        $jardin =  $jardinRepo->findOneBy(["id" => $id]);
+        $note = $jardin->getNote();
+        if($note == 0) $jardin->setNote($n);
+        else $jardin->setNote(($n+$note)/2);
+
+        $manager->persist($jardin);
+        $manager->flush();
+        $manager->clear();
+
+        return new JsonResponse(
+            [
+                "success" => true
             ], Response::HTTP_CREATED
         );
     }

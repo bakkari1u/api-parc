@@ -132,6 +132,11 @@ class Jardin
     private $Historical;
 
     /**
+     * @ORM\Column(type="integer" )
+     */
+    private $note = 0;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -514,6 +519,23 @@ class Jardin
     {
         $this->Historical = $Historical;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getNote()
+    {
+        return $this->note;
+    }
+
+    /**
+     * @param mixed $note
+     */
+    public function setNote($note): void
+    {
+        $this->note = $note;
+    }
+
 
 
 }

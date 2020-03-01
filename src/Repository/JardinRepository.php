@@ -40,7 +40,8 @@ class JardinRepository extends ServiceEntityRepository
             j.dateTime,
             j.price,
             j.typeVisit,
-            j.averageDurationVisit
+            j.averageDurationVisit,
+            j.note
             ")
             ->where('j.id = :val')
             ->setParameter('val', $value)
