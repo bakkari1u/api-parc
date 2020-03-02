@@ -28,10 +28,10 @@ class JardinController extends AbstractController
         $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findAllJardin();
         foreach ($res as $key => $value)
         {
-//            if($value["photo"] != null)
-//            {
-//                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
-//            }
+            if($value["photo"] != null)
+            {
+                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
+            }
         }
 
          return new JsonResponse(
@@ -113,10 +113,10 @@ class JardinController extends AbstractController
          $res["typeVisit"] = $this->extraireChaineToTab($res["typeVisit"]);
          $res["typeGardenParc"] = $this->extraireChaineToTab($res["typeGardenParc"]);
 
-//            if($res["photo"] != null)
-//            {
-//                $res["photo"] = base64_encode(file_get_contents($res["photo"]));
-//            }
+            if($res["photo"] != null)
+            {
+                $res["photo"] = base64_encode(file_get_contents($res["photo"]));
+            }
         }
 
         return new JsonResponse(
