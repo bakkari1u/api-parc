@@ -58,7 +58,12 @@ class JardinRepository extends ServiceEntityRepository
             j.id,
             j.nameParcGarden ,
             j.descriptive,
-            j.photo
+            j.photo,
+            j.address,
+            j.zipCode,
+            j.city,
+            j.latitude,
+            j.longitude
             "
             );
         return $query->getQuery()->getArrayResult();

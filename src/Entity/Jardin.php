@@ -137,6 +137,16 @@ class Jardin
     private $note = 0;
 
     /**
+     * @ORM\Column(type="decimal", precision=15, scale=15, nullable=true)
+     */
+    private $latitude;
+
+    /**
+     * @ORM\Column(type="decimal", precision=15, scale=15, nullable=true)
+     */
+    private $longitude;
+
+    /**
      * @return mixed
      */
     public function getId()
@@ -534,6 +544,30 @@ class Jardin
     public function setNote($note): void
     {
         $this->note = $note;
+    }
+
+    public function getLatitude(): ?string
+    {
+        return $this->latitude;
+    }
+
+    public function setLatitude(?string $latitude): self
+    {
+        $this->latitude = $latitude;
+
+        return $this;
+    }
+
+    public function getLongitude(): ?string
+    {
+        return $this->longitude;
+    }
+
+    public function setLongitude(?string $longitude): self
+    {
+        $this->longitude = $longitude;
+
+        return $this;
     }
 
 

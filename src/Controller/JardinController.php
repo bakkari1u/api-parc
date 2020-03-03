@@ -26,13 +26,13 @@ class JardinController extends AbstractController
     {
 
         $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findAllJardin();
-        foreach ($res as $key => $value)
-        {
-            if($value["photo"] != null)
-            {
-                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
-            }
-        }
+//        foreach ($res as $key => $value)
+//        {
+//            if($value["photo"] != null)
+//            {
+//                $res[$key]["photo"] = base64_encode(file_get_contents($value["photo"]));
+//            }
+//        }
 
          return new JsonResponse(
 
@@ -85,6 +85,7 @@ class JardinController extends AbstractController
         {
         $uploaddir = '../public/jardins/';
         $uploadfile = $uploaddir . basename($file['name']);
+        chmod('../public/jardins/',766);
         move_uploaded_file($file['tmp_name'], $uploadfile);
 
         $jardin->setPhoto('../public/jardins/'.$file['name']);
@@ -214,7 +215,7 @@ class JardinController extends AbstractController
     }
 
     /**
-     * @Route("/city-research/{keyWords}", name="jardins_research_keyWords", methods={"GET"})
+     * @Route("/city-research/{keyWords}", name="city_research_keyWords", methods={"GET"})
      */
     public function researchCity($keyWords)
     {
@@ -225,6 +226,74 @@ class JardinController extends AbstractController
             , Response::HTTP_CREATED
         );
     }
+    public static function geocodeAddress($address) {
+        //valeurs vide par défaut
+        $data = array('address' => '', 'lat' => '', 'lng' => '', 'city' => '', 'department' => '', 'region' => '', 'country' => '', 'postal_code' => '');
+        //on formate l'adresse
+        $address = str_replace(" ", "+", $address);
+        //on fait l'appel à l'API google map pour géocoder cette adresse
+        $json = file_get_contents("https://maps.google.com/maps/api/geocode/json?key=" ."AIzaSyC_nJYQLTEyo52KeM4_T2UTT3W-rLi1e_c"."&address=$address&sensor=false&region=fr");
+        $json = json_decode($json);
+        //on enregistre les résultats recherchés
+        if ($json->status == 'OK' && count($json->results) > 0) {
+            $res = $json->results[0];
+            //adresse complète et latitude/longitude
+            $data['address'] = $res->formatted_address;
+            $data['lat'] = $res->geometry->location->lat;
+            $data['lng'] = $res->geometry->location->lng;
+            foreach ($res->address_components as $component) {
+                //ville
+                if ($component->types[0] == 'locality') {
+                    $data['city'] = $component->long_name;
+                }
+                //départment
+                if ($component->types[0] == 'administrative_area_level_2') {
+                    $data['department'] = $component->long_name;
+                }
+                //région
+                if ($component->types[0] == 'administrative_area_level_1') {
+                    $data['region'] = $component->long_name;
+                }
+                //pays
+                if ($component->types[0] == 'country') {
+                    $data['country'] = $component->long_name;
+                }
+                //code postal
+                if ($component->types[0] == 'postal_code') {
+                    $data['postal_code'] = $component->long_name;
+                }
+            }
+        }
+        return $data;
+    }
+    public static function curl_get_contents($url)
+    {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
+        $html = curl_exec($ch);
+        $data = curl_exec($ch);
+        curl_close($ch);
+        return $data;
+    }
+    /**
+     * @Route("/test", name="test", methods={"GET"})
+     */
+public function test(){
+
+
+    $geocode = static::curl_get_contents('https://nominatim.openstreetmap.org/search.php?q=60120%20Picardie,%20France&format=json');
+    $tab = json_decode($geocode,true);
+    $latitude = $tab[0]['lat'];
+    $longitude = $tab[0]['lon'];
+
+    return new JsonResponse(
+        $latitude
+        , Response::HTTP_CREATED
+    );
+
+}
 
 
 
