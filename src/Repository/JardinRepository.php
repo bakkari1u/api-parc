@@ -41,7 +41,9 @@ class JardinRepository extends ServiceEntityRepository
             j.price,
             j.typeVisit,
             j.averageDurationVisit,
-            j.note
+            j.note,
+            j.latitude,
+            j.logitude
             ")
             ->where('j.id = :val')
             ->setParameter('val', $value)
@@ -58,12 +60,7 @@ class JardinRepository extends ServiceEntityRepository
             j.id,
             j.nameParcGarden ,
             j.descriptive,
-            j.photo,
-            j.address,
-            j.zipCode,
-            j.city,
-            j.latitude,
-            j.longitude
+            j.photo
             "
             );
         return $query->getQuery()->getArrayResult();

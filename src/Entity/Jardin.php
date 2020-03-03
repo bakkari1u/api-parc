@@ -137,12 +137,12 @@ class Jardin
     private $note = 0;
 
     /**
-     * @ORM\Column(type="decimal", precision=15, scale=15, nullable=true)
+     * @ORM\Column(type="float" ,  nullable=true)
      */
     private $latitude;
 
     /**
-     * @ORM\Column(type="decimal", precision=15, scale=15, nullable=true)
+     * @ORM\Column(type="float", nullable=true)
      */
     private $longitude;
 
