@@ -19,7 +19,8 @@
         "symfony/yaml": "4.4.*",
         "cloudinary/cloudinary_php": "dev-master",
         "ext-SimpleXML": "*",
-        "ext-curl" : "*"
+        "ext-curl" : "*",
+        "ext-zlib" : "*"
 
     },
     "require-dev": {

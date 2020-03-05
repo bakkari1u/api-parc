@@ -37,13 +37,13 @@ class JardinController extends AbstractController
     {
 
         $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findAllJardin();
-        foreach ($res as $key => $value)
-        {
-            if($value["photo"] != null)
-            {
-                $res[$key]["photo"] = file_exists($value["photo"]) ? base64_encode(file_get_contents($value["photo"])) : $res[$key]["photo"];
-            }
-        }
+//        foreach ($res as $key => $value)
+//        {
+//            if($value["photo"] != null)
+//            {
+//                $res[$key]["photo"] = file_exists($value["photo"]) ? base64_encode(file_get_contents($value["photo"])) : $res[$key]["photo"];
+//            }
+//        }
 
          return new JsonResponse(
              $res, Response::HTTP_CREATED
@@ -88,15 +88,19 @@ class JardinController extends AbstractController
         $formulaire4->submit($information, false);
         $formulaire5->submit($special, false);
         $formulaire6->submit($media, false);
+//
+//        if($file != null)
+//        {
+//        $uploaddir = '../public/jardins/';
+//        $uploadfile = $uploaddir . basename($file['name']);
+//        move_uploaded_file($file['tmp_name'], $uploadfile);
+//
+//        $jardin->setPhoto('../public/jardins/'.$file['name']);
+//        }
+        $jardin->setPhoto(gzencode(base64_encode(file_get_contents($file['tmp_name'])),9));
+//        $jardin->setPhoto(gzencode('oookkkkkkkkkkkkkkkkkkkkkkkkkkkkkjo',9));
 
-        if($file != null)
-        {
-        $uploaddir = '../public/jardins/';
-        $uploadfile = $uploaddir . basename($file['name']);
-        move_uploaded_file($file['tmp_name'], $uploadfile);
 
-        $jardin->setPhoto('../public/jardins/'.$file['name']);
-        }
 
         $address = $contactInformation["address"]." ".$contactInformation["zipCode"];
         if($this->helper->calculLatAndLong($address) == "error")
@@ -134,10 +138,10 @@ class JardinController extends AbstractController
          $res["typeVisit"] = $this->helper->extraireChaineToTab($res["typeVisit"]);
          $res["typeGardenParc"] = $this->helper->extraireChaineToTab($res["typeGardenParc"]);
 
-            if($res["photo"] != null)
-            {
-                $res["photo"] = file_exists($res["photo"]) ? base64_encode(file_get_contents($res["photo"])) : $res["photo"];
-            }
+//            if($res["photo"] != null)
+//            {
+//                $res["photo"] = file_exists($res["photo"]) ? base64_encode(file_get_contents($res["photo"])) : $res["photo"];
+//            }
         }
 
         return new JsonResponse(
