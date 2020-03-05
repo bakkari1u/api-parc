@@ -62,24 +62,39 @@ class Helper
      * @param $address
      * @param $manager
      * @param $id
+     * @return array|string
      */
-    public function calculLatAndLong($address , $manager , $id){
+    public function calculLatAndLong($address)
+    {
 
         $geocode = static::curl_get_contents('https://nominatim.openstreetmap.org/search.php?q='.$address.'&format=json');
         $tab = json_decode($geocode,true);
 
-        $jardinRepo = $manager->getRepository(Jardin::class);
-        $jardin =  $jardinRepo->findOneBy(["id" => $id]);
+//        $jardinRepo = $manager->getRepository(Jardin::class);
+//        $jardin =  $jardinRepo->findOneBy(["id" => $id]);
 
-        $latitude = $tab[0]['lat'];
-        $longitude = $tab[0]['lon'];
+        if($tab == null){
+            return "error" ;
 
-        $jardin->setLatitude($latitude);
-        $jardin->setLongitude($longitude);
+        }
 
-        $manager->persist($jardin);
-        $manager->flush();
-        $manager->clear();
+        else
+            {
+            $latitude = $tab[0]['lat'];
+            $longitude = $tab[0]['lon'];
+
+            return [
+                "latitude" => $latitude,
+                "longitude" => $longitude
+            ] ;
+
+//            $jardin->setLatitude($latitude);
+//            $jardin->setLongitude($longitude);
+//
+//            $manager->persist($jardin);
+//            $manager->flush();
+//            $manager->clear();
+        }
 
     }
 

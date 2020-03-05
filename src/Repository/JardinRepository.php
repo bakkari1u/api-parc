@@ -78,7 +78,7 @@ class JardinRepository extends ServiceEntityRepository
             "
             )
             ->where('j.nameParcGarden LIKE :keyWords')
-            ->setParameter('keyWords', "%".$keyWords."%");;
+            ->setParameter('keyWords', "%".$keyWords."%");
         return $query->getQuery()->getArrayResult();
     }
     public function findByFilters($params)
@@ -113,6 +113,19 @@ class JardinRepository extends ServiceEntityRepository
         }
         if (array_key_exists( "note" , $params)) {
             $query = $query->addOrderBy('j.note', 'DESC');
+        }
+        if (array_key_exists( "area" , $params)) {
+            $query = $query->addOrderBy('j.area', 'DESC');
+        }
+        if (array_key_exists( "type" , $params)) {
+            $tab = explode("+" , $params["type"]);
+            foreach ($tab as $value){
+                if($value =="fr") $query = $query->andWhere('j.typeGardenParc like :type')->setParameter('type', "%française%");
+                if($value =="ang") $query = $query->andWhere('j.typeGardenParc like :type')->setParameter('type', "%anglaise%");
+                if($value =="med") $query = $query->andWhere('j.typeGardenParc like :type')->setParameter('type', "%médiéval%");
+                if($value =="bot") $query = $query->andWhere('j.typeGardenParc like :type')->setParameter('type', "%botanique%");
+                if($value =="pot") $query = $query->andWhere('j.typeGardenParc like :type')->setParameter('type', "%potager%");
+            }
         }
         return $query->getQuery()->getArrayResult();
     }

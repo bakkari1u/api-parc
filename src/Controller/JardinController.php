@@ -74,8 +74,6 @@ class JardinController extends AbstractController
         $manager = $this->getDoctrine()->getManager();
         $jardin = new Jardin();
 
-
-
         $formulaire0 = $this->createForm(ContactInformationType::class, $jardin);
         $formulaire1 = $this->createForm(UsefulInformationType::class, $jardin);
         $formulaire2 = $this->createForm(OpeningConditionsType::class, $jardin);
@@ -100,19 +98,29 @@ class JardinController extends AbstractController
         $jardin->setPhoto('../public/jardins/'.$file['name']);
         }
 
-        $manager->persist($jardin);
-        $manager->flush();
-
-        $address = $jardin->getAddress()." ".$jardin->getZipCode();
-
-        $this->helper->calculLatAndLong($address , $manager , $jardin->getId());
+        $address = $contactInformation["address"]." ".$contactInformation["zipCode"];
+        if($this->helper->calculLatAndLong($address) == "error")
+        {
+            return new JsonResponse(
+                [
+                    "message" => "votre adresse est invalide"
+                ], Response::HTTP_PRECONDITION_FAILED
+            );
+        }
+        else
+            {
+            $tabCordonnee = $this->helper->calculLatAndLong($address);
+            $jardin->setLatitude($tabCordonnee["latitude"]);
+            $jardin->setLongitude($tabCordonnee["longitude"]);
+            $manager->persist($jardin);
+            $manager->flush();
 
         return new JsonResponse(
         [
             "success" => true
         ], Response::HTTP_CREATED
     );
-    }
+    }}
 
     /**
      * @Route("/jardin/{id}", name="jardin_show", methods={"GET"})
@@ -128,7 +136,7 @@ class JardinController extends AbstractController
 
             if($res["photo"] != null)
             {
-                $res["photo"] = base64_encode(file_get_contents($res["photo"]));
+                $res["photo"] = file_exists($res["photo"]) ? base64_encode(file_get_contents($res["photo"])) : $res["photo"];
             }
         }
 
@@ -173,6 +181,9 @@ class JardinController extends AbstractController
              if($tab[0] == "private") $paramsTab["private"] = $tab[1] ;
              if($tab[0] == "city") $paramsTab["city"] = $tab[1] ;
              if($tab[0] == "note") $paramsTab["note"] = $tab[1] ;
+             if($tab[0] == "area") $paramsTab["area"] = $tab[1] ;
+             if($tab[0] == "type") $paramsTab["type"] = $tab[1] ;
+             if($tab[0] == "type") $paramsTab["type"] = $tab[1] ;
              if($tab[0] == "disabilityAccessibility") $paramsTab["disabilityAccessibility"] = $tab[1] ;
          }
 
