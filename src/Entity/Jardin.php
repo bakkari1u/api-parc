@@ -97,7 +97,7 @@ class Jardin
     private $averageDurationVisit;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=100000, nullable=true)
      */
     private $photo;
 
