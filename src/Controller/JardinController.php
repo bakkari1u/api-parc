@@ -31,8 +31,11 @@ class JardinController extends AbstractController
     }
 
     /**
+     * fonction pour afficher tous les jardins
      * @Route("/jardins", name="jardins_list", methods={"GET"})
+     * @return JsonResponse
      */
+
     public function list()
     {
 
@@ -44,14 +47,15 @@ class JardinController extends AbstractController
 //                $res[$key]["photo"] = file_exists($value["photo"]) ? base64_encode(file_get_contents($value["photo"])) : $res[$key]["photo"];
 //            }
 //        }
-
          return new JsonResponse(
              $res, Response::HTTP_CREATED
     );
     }
 
     /**
+     * fonction pour ajouter un nouveau jardin
      * @Route("/new", name="new_jardin", methods={"POST"})
+     * @return JsonResponse
      */
     public function add(Request $request)
     {
@@ -67,9 +71,9 @@ class JardinController extends AbstractController
         $special = $data["special"];
         $media = $data["media"];
 
-        $visit["typeVisit"] = $this->helper->extraireTabToChaine($visit["typeVisit"]);
-        $usefulInformation["disabilityAccessibility"] = $this->helper->extraireTabToChaine($usefulInformation["disabilityAccessibility"]);
-        $special["typeGardenParc"] = $this->helper->extraireTabToChaine( $special["typeGardenParc"]);
+        $visit["typeVisit"] = ($visit["typeVisit"] != null) ? $this->helper->extraireTabToChaine($visit["typeVisit"]) : null;
+        $usefulInformation["disabilityAccessibility"] = ($usefulInformation["disabilityAccessibility"] != null) ? $this->helper->extraireTabToChaine($usefulInformation["disabilityAccessibility"]) : null;
+        $special["typeGardenParc"] = ($special["typeGardenParc"] != null) ? $this->helper->extraireTabToChaine( $special["typeGardenParc"]) : null;
 
 
         $manager = $this->getDoctrine()->getManager();
@@ -98,22 +102,24 @@ class JardinController extends AbstractController
 //
 //        $jardin->setPhoto('../public/jardins/'.$file['name']);
 //        }
-        $jardin->setPhoto((base64_encode(file_get_contents($file['tmp_name']))));
+        if($file['tmp_name'] != '') $jardin->setPhoto((base64_encode(file_get_contents($file['tmp_name']))));
+        else $jardin->setPhoto(null);
 
-        $address = $contactInformation["address"]." ".$contactInformation["zipCode"];
-        if($this->helper->calculLatAndLong($address) == "error")
-        {
-            return new JsonResponse(
-                [
-                    "message" => "votre adresse est invalide"
-                ], Response::HTTP_PRECONDITION_FAILED
-            );
-        }
-        else
-            {
-            $tabCordonnee = $this->helper->calculLatAndLong($address);
-            $jardin->setLatitude($tabCordonnee["latitude"]);
-            $jardin->setLongitude($tabCordonnee["longitude"]);
+
+//        $address = $contactInformation["address"]." ".$contactInformation["zipCode"];
+//        if($this->helper->calculLatAndLong($address) == "error")
+//        {
+//            return new JsonResponse(
+//                [
+//                    "message" => "votre adresse est invalide"
+//                ], Response::HTTP_PRECONDITION_FAILED
+//            );
+//        }
+//        else
+//            {
+//            $tabCordonnee = $this->helper->calculLatAndLong($address);
+            $jardin->setLatitude(46.7469315);
+            $jardin->setLongitude(4.475195374929792);
             $manager->persist($jardin);
             $manager->flush();
 
@@ -122,10 +128,12 @@ class JardinController extends AbstractController
             "success" => true
         ], Response::HTTP_CREATED
     );
-    }}
+    }
 
     /**
+     * fonction pour afficher les details d'un jardin
      * @Route("/jardin/{id}", name="jardin_show", methods={"GET"})
+     * @return JsonResponse
      */
     public function show($id)
     {
@@ -149,7 +157,9 @@ class JardinController extends AbstractController
     }
 
     /**
+     * fonction permet de rechercher des jardins avec leur nom
      * @Route("/jardins-research/{keyWords}", name="jardins_research_keyWords", methods={"GET"})
+     * @return JsonResponse
      */
     public function researchKeyWords($keyWords)
     {
@@ -162,7 +172,9 @@ class JardinController extends AbstractController
     }
 
     /**
+     * fonction permet la recherche avancée des jardins avec des plusieurs critères
      * @Route("/jardins-filter/{params?1}", name="jardins_research_criteria", methods={"GET"})
+     * @return JsonResponse
      */
     public function researchCriteria($params)
     {
@@ -199,7 +211,9 @@ class JardinController extends AbstractController
     }
 
     /**
+     * fonction pour noter un jardin
      * @Route("/note/{id}/{n}", name="jardins_note", methods={"POST"})
+     * @return JsonResponse
      */
     public function noterJardin($id , $n)
     {
@@ -223,7 +237,9 @@ class JardinController extends AbstractController
     }
 
     /**
+     * fonction permet de rechercher des villes
      * @Route("/city-research/{keyWords}", name="city_research_keyWords", methods={"GET"})
+     * @return JsonResponse
      */
     public function researchCity($keyWords)
     {
@@ -236,7 +252,9 @@ class JardinController extends AbstractController
     }
 
     /**
+     * fonction pour contacter le service administrateur
      * @Route("/contact", name="contact", methods={"POST"})
+     * @return JsonResponse
      */
     public function contact(Request $request)
     {
@@ -260,7 +278,9 @@ class JardinController extends AbstractController
     }
 
     /**
+     * fonction pour afficher les 4 meilleurs jardins de la semaine
      * @Route("/jardin-best", name="jardins_best", methods={"GET"})
+     * @return JsonResponse
      */
     public function list_best()
     {
