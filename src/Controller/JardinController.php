@@ -108,7 +108,7 @@ class JardinController extends AbstractController
             return new JsonResponse(
                 [
                     "message" => "votre adresse est invalide"
-                ], Response::HTTP_PRECONDITION_FAILED
+                ], Response::HTTP_CREATED
             );
         }
         else
@@ -122,7 +122,7 @@ class JardinController extends AbstractController
         return new JsonResponse(
         [
             "success" => true
-        ], Response::HTTP_CREATED
+        ], Response::HTTP_PRECONDITION_FAILED
     );
     }}
 
