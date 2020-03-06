@@ -102,20 +102,22 @@ class JardinController extends AbstractController
 
 
 
-        $address = $contactInformation["address"]." ".$contactInformation["zipCode"];
-        if($this->helper->calculLatAndLong($address) == "error")
-        {
-            return new JsonResponse(
-                [
-                    "message" => "votre adresse est invalide"
-                ], Response::HTTP_PRECONDITION_FAILED
-            );
-        }
-        else
-            {
-            $tabCordonnee = $this->helper->calculLatAndLong($address);
-            $jardin->setLatitude($tabCordonnee["latitude"]);
-            $jardin->setLongitude($tabCordonnee["longitude"]);
+//        $address = $contactInformation["address"]." ".$contactInformation["zipCode"];
+//        if($this->helper->calculLatAndLong($address) == "error")
+//        {
+//            return new JsonResponse(
+//                [
+//                    "message" => "votre adresse est invalide"
+//                ], Response::HTTP_PRECONDITION_FAILED
+//            );
+//        }
+//        else
+//            {
+//            $tabCordonnee = $this->helper->calculLatAndLong($address);
+//            $jardin->setLatitude($tabCordonnee["latitude"]);
+//            $jardin->setLongitude($tabCordonnee["longitude"]);
+            $jardin->setLatitude(0);
+            $jardin->setLongitude(0);
             $manager->persist($jardin);
             $manager->flush();
 
@@ -124,7 +126,7 @@ class JardinController extends AbstractController
             "success" => true
         ], Response::HTTP_CREATED
     );
-    }}
+    }
 
     /**
      * @Route("/jardin/{id}", name="jardin_show", methods={"GET"})
