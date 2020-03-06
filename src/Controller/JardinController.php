@@ -102,7 +102,7 @@ class JardinController extends AbstractController
 
 
 
-        $address = strval($contactInformation["address"])." ".strval($contactInformation["zipCode"]);
+        $address = "5 boulevard bizet 59650";
         if($this->helper->calculLatAndLong($address) == "error")
         {
             return new JsonResponse(
