@@ -97,7 +97,7 @@ class JardinController extends AbstractController
 //
 //        $jardin->setPhoto('../public/jardins/'.$file['name']);
 //        }
-        $jardin->setPhoto(gzencode(base64_encode(file_get_contents($file['tmp_name'])),9));
+        $jardin->setPhoto((base64_encode(file_get_contents($file['tmp_name']))));
 //        $jardin->setPhoto(gzencode('oookkkkkkkkkkkkkkkkkkkkkkkkkkkkkjo',9));
 
 
@@ -258,6 +258,26 @@ class JardinController extends AbstractController
         return new JsonResponse(
            [ "success" => true ]
             , Response::HTTP_CREATED
+        );
+    }
+
+    /**
+     * @Route("/jardin-best", name="jardins_best", methods={"GET"})
+     */
+    public function list_best()
+    {
+
+        $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->finBestJardin();
+//        foreach ($res as $key => $value)
+//        {
+//            if($value["photo"] != null)
+//            {
+//                $res[$key]["photo"] = file_exists($value["photo"]) ? base64_encode(file_get_contents($value["photo"])) : $res[$key]["photo"];
+//            }
+//        }
+
+        return new JsonResponse(
+            $res, Response::HTTP_CREATED
         );
     }
 

@@ -144,4 +144,21 @@ class JardinRepository extends ServiceEntityRepository
         return $query->getQuery()->getArrayResult();
     }
 
+    public function finBestJardin()
+    {
+        $query = $this->createQueryBuilder('j')
+            ->select(
+                "
+            j.id,
+            j.nameParcGarden ,
+            j.descriptive,
+            j.photo, 
+            j.note
+            "
+            )
+            ->addOrderBy('j.note', 'DESC')
+            ->setMaxResults(4);
+        return $query->getQuery()->getArrayResult();
+    }
+
     }
