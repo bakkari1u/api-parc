@@ -71,6 +71,7 @@ class JardinController extends AbstractController
         $usefulInformation["disabilityAccessibility"] = $this->helper->extraireTabToChaine($usefulInformation["disabilityAccessibility"]);
         $special["typeGardenParc"] = $this->helper->extraireTabToChaine( $special["typeGardenParc"]);
 
+
         $manager = $this->getDoctrine()->getManager();
         $jardin = new Jardin();
 
@@ -98,17 +99,14 @@ class JardinController extends AbstractController
 //        $jardin->setPhoto('../public/jardins/'.$file['name']);
 //        }
         $jardin->setPhoto((base64_encode(file_get_contents($file['tmp_name']))));
-//        $jardin->setPhoto(gzencode('oookkkkkkkkkkkkkkkkkkkkkkkkkkkkkjo',9));
 
-
-
-        $address = "5 boulevard bizet 59650";
+        $address = $contactInformation["address"]." ".$contactInformation["zipCode"];
         if($this->helper->calculLatAndLong($address) == "error")
         {
             return new JsonResponse(
                 [
                     "message" => "votre adresse est invalide"
-                ], Response::HTTP_CREATED
+                ], Response::HTTP_PRECONDITION_FAILED
             );
         }
         else
@@ -122,7 +120,7 @@ class JardinController extends AbstractController
         return new JsonResponse(
         [
             "success" => true
-        ], Response::HTTP_PRECONDITION_FAILED
+        ], Response::HTTP_CREATED
     );
     }}
 
