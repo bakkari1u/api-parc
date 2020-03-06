@@ -60,7 +60,8 @@ class JardinRepository extends ServiceEntityRepository
             j.id,
             j.nameParcGarden ,
             j.descriptive,
-            j.photo
+            j.photo,
+            j.note
             "
             );
         return $query->getQuery()->getArrayResult();
@@ -89,7 +90,8 @@ class JardinRepository extends ServiceEntityRepository
             j.id,
             j.nameParcGarden ,
             j.descriptive,
-            j.photo
+            j.photo,
+            j.note
             "
             );
         if (array_key_exists( "remarkableLabel" , $params)) {
