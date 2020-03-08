@@ -10,11 +10,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class RegistreController extends AbstractController
 {
     /**
-     * @Route("/register", name="app_register" ,  methods={"POST"})
+     *fonction permet à un utilisateur de s'enregistrer
+     * @Route("/register", name="api_register" ,  methods={"POST"})
+     * @return JsonResponse
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder)
     {
@@ -38,14 +41,39 @@ class RegistreController extends AbstractController
             $entityManager->flush();
 
             return new JsonResponse(
-                [
-                    "success" => true,
-                    "user" => $user->getId()
-                ], Response::HTTP_OK
+                    $user->getId()
+                , Response::HTTP_OK
             );
 
         }
-        return new Response('Adresse email déja utilisé');
+        return new JsonResponse(
+                'Adresse email déja utilisé'
+            , Response::HTTP_BAD_REQUEST
+        );
         }
 
-}
+    /**
+     * @Route("/login", name="api_login", methods={"POST"})
+     */
+    public function login()
+    {
+
+        return new JsonResponse(
+            Response::HTTP_OK
+        );
+
+    }
+
+    /**
+     * @Route("/profile", name="api_profile")
+     * @IsGranted("ROLE_USER")
+     */
+    public function profile()
+    {
+        return $this->json([
+            'user' => $this->getUser()->getUsername()
+        ]);
+    }
+
+
+    }

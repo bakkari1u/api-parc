@@ -9,3 +9,6 @@
 #jardins_research_criteria:
 #  path:       /jardins-filters/criteria/{$params?}
 #  controller: App\Controller\JardinController::researchCriteria
+
+api_logout:
+    path: /logout
