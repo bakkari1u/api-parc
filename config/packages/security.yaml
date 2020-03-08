@@ -20,8 +20,12 @@ security:
             guard:
                 authenticators:
                     - App\Security\LoginAuthAuthenticator
+                    - App\Security\JwtAuthenticator
+                entry_point: App\Security\LoginAuthAuthenticator
             logout:
                 path: api_logout
+                success_handler: App\Security\JwtLogout
+#            stateless: true
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#firewalls-authentication

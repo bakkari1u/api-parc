@@ -11,6 +11,7 @@
         "ext-zlib": "*",
         "aws/aws-sdk-php": "~3.0",
         "cloudinary/cloudinary_php": "dev-master",
+        "firebase/php-jwt": "^5.1",
         "ktamas77/firebase-php": "^2.2",
         "nelmio/cors-bundle": "^2.0",
         "sensio/framework-extra-bundle": "^5.5",

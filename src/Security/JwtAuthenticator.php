@@ -4,36 +4,48 @@ namespace App\Security;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Guard\AbstractGuardAuthenticator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Firebase\JWT\JWT;
+use Firebase\JWT\ExpiredException;
+use Firebase\JWT\SignatureInvalidException;
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
-class LoginAuthAuthenticator extends AbstractGuardAuthenticator
+
+class JwtAuthenticator extends AbstractGuardAuthenticator
 {
-
-    private $passwordEncoder;
-
-    public function __construct(UserPasswordEncoderInterface $passwordEncoder)
-    {
-        $this->passwordEncoder = $passwordEncoder;
-    }
-
     public function supports(Request $request)
     {
-        return $request->get("_route") === "api_login" && $request->isMethod("POST");
+        return $request->cookies->get("jwt") ? true : false;
     }
 
     public function getCredentials(Request $request)
     {
-        $data = json_decode($request->getContent(), true);
-        return [
-            'email' => $data["email"],
-            'password' => $data["password"]
-        ];
+        $cookie = $request->cookies->get("jwt");
+        $error = "Unable to validate session.";
+        try
+        {
+            $decodedJwt = JWT::decode($cookie, getenv("JWT_SECRET"), ['HS256']);
+            return [
+                'user_id' => $decodedJwt->user_id,
+                'email' => $decodedJwt->email
+            ];
+        }
+        catch(ExpiredException $e)
+        {
+            $error = "Session has expired.";
+        }
+        catch(SignatureInvalidException $e)
+        {
+            $error = "Attempting access invalid session.";
+        }
+        catch(\Exception $e)
+        {
+        }
+        throw new CustomUserMessageAuthenticationException($error);
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
@@ -43,7 +55,7 @@ class LoginAuthAuthenticator extends AbstractGuardAuthenticator
 
     public function checkCredentials($credentials, UserInterface $user)
     {
-        return $this->passwordEncoder->isPasswordValid($user, $credentials['password']);
+        return $user->getId() === $credentials['user_id'];
     }
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
@@ -55,29 +67,16 @@ class LoginAuthAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
-        $expireTime = time() + 3600;
-        $tokenPayload = [
-            'user_id' => $token->getUser()->getId(),
-            'email'   => $token->getUser()->getEmail(),
-            'exp'     => $expireTime
-        ];
-        $jwt = JWT::encode($tokenPayload, getenv("JWT_SECRET"));
-        setcookie("jwt", $jwt, $expireTime, "/", "", true, true);
-        return new JsonResponse([
-            'result' => true,
-            'token' => $jwt
-        ]);
+        // todo
     }
 
     public function start(Request $request, AuthenticationException $authException = null)
     {
-        return new JsonResponse([
-            'error' => 'Access Denied'
-        ]);
+        // todo
     }
 
     public function supportsRememberMe()
     {
-        return false;
+        // todo
     }
 }
