@@ -48,9 +48,9 @@ class LoginAuthAuthenticator extends AbstractGuardAuthenticator
 
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
-        return new JsonResponse([
-            'error' => $exception->getMessageKey()
-        ], 400);
+        return new JsonResponse(
+            "le compte spécifié n'existe pas"
+        , 401);
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
@@ -64,9 +64,13 @@ class LoginAuthAuthenticator extends AbstractGuardAuthenticator
         $jwt = JWT::encode($tokenPayload, getenv("JWT_SECRET"));
         setcookie("jwt", $jwt, $expireTime, "/", "", true, true);
         return new JsonResponse([
-            'result' => true,
+            'id' => $token->getUser()->getId(),
+            'email' => $token->getUser()->getEmail(),
+            'username' => $token->getUser()->getUsername(),
+            'firstname' => $token->getUser()->getFirstname(),
+            'lastname' => $token->getUser()->getLastname(),
             'token' => $jwt
-        ]);
+        ],200);
     }
 
     public function start(Request $request, AuthenticationException $authException = null)

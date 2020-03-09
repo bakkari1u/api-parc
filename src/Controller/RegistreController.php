@@ -41,14 +41,14 @@ class RegistreController extends AbstractController
             $entityManager->flush();
 
             return new JsonResponse(
-                    $user->getId()
-                , Response::HTTP_OK
+                   Response::HTTP_OK
             );
 
         }
         return new JsonResponse(
                 'Adresse email déja utilisé'
-            , Response::HTTP_BAD_REQUEST
+            , Response::HTTP_RESERVED
+
         );
         }
 

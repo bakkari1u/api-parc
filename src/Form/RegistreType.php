@@ -19,6 +19,12 @@ class RegistreType extends AbstractType
             ->add('username', TextType::class, [
                 'required' => false
             ])
+            ->add('firstname', TextType::class, [
+                'required' => false
+            ])
+            ->add('lastname', TextType::class, [
+                'required' => false
+            ])
             ->add('password', PasswordType::class, [
                 'mapped' => false,
                 'required' => true
