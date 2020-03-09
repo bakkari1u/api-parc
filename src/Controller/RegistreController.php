@@ -41,7 +41,7 @@ class RegistreController extends AbstractController
             $entityManager->flush();
 
             return new JsonResponse(
-                   Response::HTTP_OK
+                   201
             );
 
         }

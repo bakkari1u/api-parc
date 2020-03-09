@@ -19,6 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class JardinController extends AbstractController
 {
@@ -33,6 +34,7 @@ class JardinController extends AbstractController
     /**
      * fonction pour afficher tous les jardins
      * @Route("/jardins", name="jardins_list", methods={"GET"})
+     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
 
