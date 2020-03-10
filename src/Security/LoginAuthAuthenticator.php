@@ -62,7 +62,7 @@ class LoginAuthAuthenticator extends AbstractGuardAuthenticator
             'exp'     => $expireTime
         ];
         $jwt = JWT::encode($tokenPayload, getenv("JWT_SECRET"));
-        setcookie("jwt", $jwt, $expireTime, "/");
+        setcookie("jwt", $jwt, $expireTime, "/","jardin-parc.firebaseapp.com");
         return new JsonResponse([
             'id' => $token->getUser()->getId(),
             'email' => $token->getUser()->getEmail(),
