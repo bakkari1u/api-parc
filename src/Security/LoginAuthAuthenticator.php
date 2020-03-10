@@ -62,7 +62,7 @@ class LoginAuthAuthenticator extends AbstractGuardAuthenticator
             'exp'     => $expireTime
         ];
         $jwt = JWT::encode($tokenPayload, getenv("JWT_SECRET"));
-        setcookie("jwt", $jwt, $expireTime, "/");
+//        setcookie("jwt", $jwt, $expireTime, "/");
         return new JsonResponse([
             'id' => $token->getUser()->getId(),
             'email' => $token->getUser()->getEmail(),
@@ -70,7 +70,7 @@ class LoginAuthAuthenticator extends AbstractGuardAuthenticator
             'firstname' => $token->getUser()->getFirstname(),
             'lastname' => $token->getUser()->getLastname(),
             'token' => $jwt
-        ],200);
+        ],200).setcookie("jwt", $jwt, $expireTime, "/");
     }
 
     public function start(Request $request, AuthenticationException $authException = null)
