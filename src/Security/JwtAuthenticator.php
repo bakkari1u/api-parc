@@ -20,8 +20,6 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
     public function supports(Request $request)
     {
         return $request->cookies->get("jwt") ? true : false;
-//        return $request->headers->has('Authorization')
-//            && 0 === strpos($request->headers->get('Authorization'), 'Bearer ');
 
     }
 
@@ -32,6 +30,10 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
         try
         {
             $decodedJwt = JWT::decode($cookie, getenv("JWT_SECRET"), ['HS256']);
+            return [
+                'user_id' => $decodedJwt->user_id,
+                'email' => $decodedJwt->email
+            ];
 
         }
         catch(ExpiredException $e)
@@ -47,13 +49,6 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
         }
         throw new CustomUserMessageAuthenticationException($error);
 
-//        $authorizationHeader = $request->headers->get('Authorization');
-//        $test =  substr($authorizationHeader, 7);
-//        $decodedJwt = JWT::decode($test, getenv("JWT_SECRET"), ['HS256']);
-//            return [
-//                'user_id' => $decodedJwt->user_id,
-//                'email' => $decodedJwt->email
-//            ];
 
     }
 
