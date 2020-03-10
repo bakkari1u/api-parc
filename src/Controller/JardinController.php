@@ -34,7 +34,6 @@ class JardinController extends AbstractController
     /**
      * fonction pour afficher tous les jardins
      * @Route("/jardins", name="jardins_list", methods={"GET"})
-     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
 
@@ -57,7 +56,6 @@ class JardinController extends AbstractController
     /**
      * fonction pour ajouter un nouveau jardin
      * @Route("/new", name="new_jardin", methods={"POST"})
-     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
     public function add(Request $request)
@@ -136,7 +134,6 @@ class JardinController extends AbstractController
     /**
      * fonction pour afficher les details d'un jardin
      * @Route("/jardin/{id}", name="jardin_show", methods={"GET"})
-     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
     public function show($id)
@@ -163,7 +160,6 @@ class JardinController extends AbstractController
     /**
      * fonction permet de rechercher des jardins avec leur nom
      * @Route("/jardins-research/{keyWords}", name="jardins_research_keyWords", methods={"GET"})
-     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
     public function researchKeyWords($keyWords)
@@ -179,7 +175,6 @@ class JardinController extends AbstractController
     /**
      * fonction permet la recherche avancée des jardins avec des plusieurs critères
      * @Route("/jardins-filter/{params?1}", name="jardins_research_criteria", methods={"GET"})
-     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
     public function researchCriteria($params)
@@ -219,7 +214,6 @@ class JardinController extends AbstractController
     /**
      * fonction pour noter un jardin
      * @Route("/note/{id}/{n}", name="jardins_note", methods={"POST"})
-     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
     public function noterJardin($id , $n)
@@ -246,7 +240,6 @@ class JardinController extends AbstractController
     /**
      * fonction permet de rechercher des villes
      * @Route("/city-research/{keyWords}", name="city_research_keyWords", methods={"GET"})
-     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
     public function researchCity($keyWords)
@@ -262,7 +255,6 @@ class JardinController extends AbstractController
     /**
      * fonction pour contacter le service administrateur
      * @Route("/contact", name="contact", methods={"POST"})
-     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
     public function contact(Request $request)
@@ -289,7 +281,6 @@ class JardinController extends AbstractController
     /**
      * fonction pour afficher les 4 meilleurs jardins de la semaine
      * @Route("/jardin-best", name="jardins_best", methods={"GET"})
-     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
     public function list_best()

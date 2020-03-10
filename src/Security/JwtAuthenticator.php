@@ -46,6 +46,7 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
         {
         }
         throw new CustomUserMessageAuthenticationException($error);
+
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
