@@ -34,7 +34,6 @@ class JardinController extends AbstractController
     /**
      * fonction pour afficher tous les jardins
      * @Route("/jardins", name="jardins_list", methods={"GET"})
-     * @IsGranted("ROLE_USER")
      * @return JsonResponse
      */
 
