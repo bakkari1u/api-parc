@@ -3,6 +3,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Commentaire;
 use App\Entity\Contact;
 use App\Entity\Jardin;
 use App\Form\ContactInformationType;
@@ -138,18 +139,15 @@ class JardinController extends AbstractController
      */
     public function show($id)
     {
-
-        $res = $this->getDoctrine()->getManager()->getRepository(Jardin::class)->findOneById($id);
+        $manager = $this->getDoctrine()->getManager();
+        $res = $manager->getRepository(Jardin::class)->findOneById($id);
         if($res != null)
         {
          $res["typeVisit"] = $this->helper->extraireChaineToTab($res["typeVisit"]);
          $res["typeGardenParc"] = $this->helper->extraireChaineToTab($res["typeGardenParc"]);
-
-//            if($res["photo"] != null)
-//            {
-//                $res["photo"] = file_exists($res["photo"]) ? base64_encode(file_get_contents($res["photo"])) : $res["photo"];
-//            }
         }
+        $commentaires = $manager->getRepository(Commentaire::class)->findCommentairesByJardinId($id);
+        $res["comments"] = $commentaires ;
 
         return new JsonResponse(
 

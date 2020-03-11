@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Commentaire;
+use App\Entity\Jardin;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Common\Persistence\ManagerRegistry;
 
@@ -47,4 +49,22 @@ class CommentaireRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findCommentairesByJardinId($value)
+    {
+        $query = $this->createQueryBuilder("c")
+            ->select(
+                "
+            u.id AS id,
+            u.username AS username,
+            c.commentaire AS comment,
+            DATE_FORMAT(c.date, 'le %d/%m/%Y') AS date
+            "
+            )
+            ->innerJoin(User::class, "u", "WITH", "u.id = c.id_user")
+            ->where('c.id_jardin = :val')
+            ->setParameter('val', $value);
+        return $query->getQuery()->getArrayResult();
+
+    }
 }
