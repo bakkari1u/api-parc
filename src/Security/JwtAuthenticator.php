@@ -20,7 +20,6 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
     public function supports(Request $request)
     {
         return $request->cookies->get("jwt") ? true : false;
-
     }
 
     public function getCredentials(Request $request)
@@ -34,7 +33,6 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
                 'user_id' => $decodedJwt->user_id,
                 'email' => $decodedJwt->email
             ];
-
         }
         catch(ExpiredException $e)
         {
@@ -48,8 +46,6 @@ class JwtAuthenticator extends AbstractGuardAuthenticator
         {
         }
         throw new CustomUserMessageAuthenticationException($error);
-
-
     }
 
     public function getUser($credentials, UserProviderInterface $userProvider)
