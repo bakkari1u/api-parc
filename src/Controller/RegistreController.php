@@ -59,19 +59,4 @@ class RegistreController extends AbstractController
 
     }
 
-    /**
-     * @Route("/profile", name="api_profile")
-     * @IsGranted("ROLE_USER")
-     */
-    public function profile(Request $request)
-    {
-        $authHeader = $_SERVER['HTTP_AUTHORIZATION'];
-//        $jwt = sscanf(, 'Authorization: Bearer %s');
-        return $this->json([
-//            'user' => $this->getUser()->getUsername()
-            $authHeader
-        ]);
-    }
-
-
     }

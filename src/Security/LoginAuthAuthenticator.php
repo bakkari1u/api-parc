@@ -66,6 +66,7 @@ class LoginAuthAuthenticator extends AbstractGuardAuthenticator
         return new JsonResponse([
             'id' => $token->getUser()->getId(),
             'email' => $token->getUser()->getEmail(),
+            'role' => $token->getUser()->getRole(),
             'username' => $token->getUser()->getUsername(),
             'firstname' => $token->getUser()->getFirstname(),
             'lastname' => $token->getUser()->getLastname(),

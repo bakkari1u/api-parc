@@ -63,6 +63,7 @@ class CommentaireRepository extends ServiceEntityRepository
             )
             ->innerJoin(User::class, "u", "WITH", "u.id = c.id_user")
             ->where('c.id_jardin = :val')
+            ->orderBy('c.date','DESC')
             ->setParameter('val', $value);
         return $query->getQuery()->getArrayResult();
 
