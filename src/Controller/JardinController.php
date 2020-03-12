@@ -298,5 +298,21 @@ class JardinController extends AbstractController
         );
     }
 
+    /**
+     * fonction pour afficher les commentaires d'un jardin
+     * @Route("/parc-jardin/comment/{id}", name="comments_jardins", methods={"GET"})
+     * @return JsonResponse
+     */
+    public function show_comments($id)
+    {
+        $manager = $this->getDoctrine()->getManager();
+        $commentaires = $manager->getRepository(Commentaire::class)->findCommentairesByJardinId($id);
+
+
+        return new JsonResponse(
+            $commentaires, Response::HTTP_CREATED
+        );
+    }
+
 
 }
