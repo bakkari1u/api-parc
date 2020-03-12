@@ -16,10 +16,6 @@ class Actualite
      */
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=20)
-     */
-    private $name;
 
     /**
      * @ORM\Column(type="string", length=500, nullable=true)
@@ -32,26 +28,20 @@ class Actualite
     private $photo;
 
     /**
-     * @ORM\Column(type="string", length=20, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $url;
+
+    /**
+     * @ORM\Column(type="string", length=15, nullable=true)
+     */
+    private $date;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-
-    public function setName(string $name): self
-    {
-        $this->name = $name;
-
-        return $this;
-    }
 
     public function getDescription(): ?string
     {
@@ -85,6 +75,18 @@ class Actualite
     public function setUrl(?string $url): self
     {
         $this->url = $url;
+
+        return $this;
+    }
+
+    public function getDate(): ?string
+    {
+        return $this->date;
+    }
+
+    public function setDate(?string $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }

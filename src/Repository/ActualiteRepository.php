@@ -47,4 +47,19 @@ class ActualiteRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    public function findAllActualite()
+    {
+        $query = $this->createQueryBuilder('a')
+            ->select(
+                "
+            a.id,
+            a.description ,
+            a.url,
+            a.photo,
+            a.date
+            "
+            );
+        return $query->getQuery()->getArrayResult();
+    }
 }
