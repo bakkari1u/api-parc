@@ -8,7 +8,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserController extends AbstractController
 {
@@ -39,9 +38,25 @@ class UserController extends AbstractController
      */
     public function update(Request $request)
     {
+        $data = json_decode($request->getContent(), true);
+        $manager = $this->getDoctrine()->getManager();
+        $user = $manager->getRepository(User::class)->find($data["id"]);
+        $password_is_correct = password_verify($data["password"],$user->getPassword());
+        if($password_is_correct)
+        {
+            if($data["username"]!=null and $data["username"]!="") $user->setUsername($data["username"]);
+            if($data["firstname"]!=null and $data["firstname"]!="") $user->setFirstname($data["firstname"]);
+            if($data["lastname"]!=null and $data["lastname"]!="") $user->setLastname($data["lastname"]);
+            $user->setPassword(password_hash($data["new_password"],PASSWORD_DEFAULT));
+            $manager->persist($user);
+            $manager->flush();
 
+            return new JsonResponse(
+                200
+            );
+        }
         return new JsonResponse(
-            200
+           "le mot de passe actuel est incorrect" ,  Response::HTTP_BAD_REQUEST
         );
 
     }

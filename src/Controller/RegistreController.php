@@ -31,12 +31,7 @@ class RegistreController extends AbstractController
 
         if($userRepo->findUserByEmail($data["email"]) == null) {
 
-            $user->setPassword(
-                $passwordEncoder->encodePassword(
-                    $user,
-                    $form->get('password')->getData()
-                )
-            );
+            $user->setPassword(password_hash($form->get('password')->getData(),PASSWORD_DEFAULT));
             $entityManager->persist($user);
             $entityManager->flush();
 

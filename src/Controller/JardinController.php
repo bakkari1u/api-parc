@@ -20,7 +20,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class JardinController extends AbstractController
 {
@@ -146,8 +145,8 @@ class JardinController extends AbstractController
          $res["typeVisit"] = $this->helper->extraireChaineToTab($res["typeVisit"]);
          $res["typeGardenParc"] = $this->helper->extraireChaineToTab($res["typeGardenParc"]);
         }
-        $commentaires = $manager->getRepository(Commentaire::class)->findCommentairesByJardinId($id);
-        $res["comments"] = $commentaires ;
+//        $commentaires = $manager->getRepository(Commentaire::class)->findCommentairesByJardinId($id);
+//        $res["comments"] = $commentaires ;
 
         return new JsonResponse(
 
